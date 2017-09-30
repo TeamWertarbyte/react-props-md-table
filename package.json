@@ -6,9 +6,6 @@
   "bin": {
     "props-table": "index.js"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TeamWertarbyte/react-props-md-table.git"
