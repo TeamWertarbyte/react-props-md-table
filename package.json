@@ -1,6 +1,6 @@
 {
   "name": "@wertarbyte/react-props-md-table",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A markdown table generator for React component props.",
   "main": "index.js",
   "bin": {
