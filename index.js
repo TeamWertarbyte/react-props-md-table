@@ -11,9 +11,10 @@ console.log('|Name|Type|Default|Description|')
 console.log('|---|---|---|---|')
 for (const name of Object.keys(component.props)) {
   const { type, required, description, defaultValue } = component.props[name]
-  console.log(`|${name}${required ? '*' : ''}|\`${formatType(type)}\`|${defaultValue != null ? `\`${defaultValue.value}\`` : ''}|${description}`)
+  console.log(`|${name}${required ? '*' : ''}|\`${formatType(type)}\`|${defaultValue != null ? `\`${defaultValue.value}\`` : ''}|${description}|`)
 }
 if (Object.keys(component.props).some((name) => component.props[name].required)) {
+  console.log('')
   console.log('\\* required property')
 }
 
