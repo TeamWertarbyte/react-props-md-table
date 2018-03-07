@@ -35,7 +35,7 @@ if (pretty) {
   console.log(`|${headers.join('|')}|`)
   console.log(`|${headers.map(() => '---').join('|')}|`)
   for (const { name, defaultValue, type, description } of props) {
-    console.log(`|${name}|${defaultValue}|${type}|${description}|`)
+    console.log(`|${name}|${type}|${defaultValue}|${description}|`)
   }
 }
 
