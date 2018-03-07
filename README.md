@@ -10,5 +10,9 @@ npm i -g @wertarbyte/react-props-md-table`
 
 ## Usage
 ```
-props-table path/to/SomeComponent.js
+props-table [-p] path/to/SomeComponent.js
 ```
+
+| Option | Description              |
+|--------|--------------------------|
+| `-p`   | Pretty-print the output. |

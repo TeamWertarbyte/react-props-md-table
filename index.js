@@ -3,16 +3,42 @@ const reactDocs = require('react-docgen')
 const fs = require('fs')
 const path = require('path')
 
-const filename = process.argv[process.argv.length - 1]
+const args = process.argv.slice(1)
+const filename = args[args.length - 1]
 const content = fs.readFileSync(path.resolve(process.cwd(), filename), 'utf-8')
+const pretty = args.includes('--pretty') || args.includes('-p')
 
 const component = reactDocs.parse(content)
-console.log('|Name|Type|Default|Description|')
-console.log('|---|---|---|---|')
-for (const name of Object.keys(component.props)) {
-  const { type, required, description, defaultValue } = component.props[name]
-  console.log(`|${name}${required ? '*' : ''}|\`${formatType(type)}\`|${defaultValue != null ? `\`${defaultValue.value}\`` : ''}|${description}|`)
+
+const props = Object.entries(component.props).map(([name, { type, required, description, defaultValue }]) => ({
+  name: `${name}${required ? '*' : ''}`,
+  defaultValue: `${defaultValue != null ? `\`${defaultValue.value}\`` : ''}`,
+  type: `\`${formatType(type)}\``,
+  description
+}))
+
+const headers = ['Name', 'Type', 'Default', 'Description']
+if (pretty) {
+  const columnWidths = [
+    Math.max(4, ...props.map(({name}) => name.length)),
+    Math.max(4, ...props.map(({type}) => type.length)),
+    Math.max(7, ...props.map(({defaultValue}) => defaultValue.length)),
+    Math.max(11, ...props.map(({description}) => description.length))
+  ]
+
+  console.log(`|${headers.map((h, i) => fill(h, columnWidths[i])).join('|')}|`)
+  console.log(`|${columnWidths.map((width) => '-'.repeat(width)).join('|')}|`)
+  for (const { name, defaultValue, type, description } of props) {
+    console.log(`|${fill(name, columnWidths[0])}|${fill(type, columnWidths[1])}|${fill(defaultValue, columnWidths[2])}|${fill(description, columnWidths[3])}|`)
+  }
+} else {
+  console.log(`|${headers.join('|')}|`)
+  console.log(`|${headers.map(() => '---').join('|')}|`)
+  for (const { name, defaultValue, type, description } of props) {
+    console.log(`|${name}|${defaultValue}|${type}|${description}|`)
+  }
 }
+
 if (Object.keys(component.props).some((name) => component.props[name].required)) {
   console.log('')
   console.log('\\* required property')
@@ -24,4 +50,11 @@ function formatType (type) {
   } else {
     return type.name
   }
+}
+
+function fill (string, length) {
+  while (string.length < length) {
+    string += ' '
+  }
+  return string
 }
